@@ -1,0 +1,60 @@
+{
+  "name": "Dark Trap Pack",
+  "category": "trap",
+  "presets": [
+    {
+      "name": "Dark 808 Bass",
+      "prompt": "dark trap 808 sub bass",
+      "params": {
+        "osc1Wave": 2, "osc1Unison": 3, "osc1Detune": 15, "osc1Sub": 0.8,
+        "pulseWidth": 0.5, "wavetablePos": 0.5,
+        "osc2Wave": 3, "osc2Coarse": 0, "osc2Level": 0.2,
+        "filterType": 0, "filterCutoff": 180, "filterReso": 0.9, "filterDrive": 1.2,
+        "filterEnvAmt": 0.6,
+        "filterAttack": 0.005, "filterDecay": 0.15, "filterSustain": 0.2, "filterRelease": 0.2,
+        "ampAttack": 0.005, "ampDecay": 0.3, "ampSustain": 0.85, "ampRelease": 0.2,
+        "distortionDrive": 2.5, "distortionMix": 0.35,
+        "chorusRate": 0.0, "chorusDepth": 0.0, "chorusMix": 0.0,
+        "delayTime": 0.0, "delayFeedback": 0.0, "delayMix": 0.0,
+        "reverbSize": 0.3, "reverbDamping": 0.7, "reverbMix": 0.1,
+        "masterGain": 0.95, "glide": 0.05, "styleStrength": 1.0
+      }
+    },
+    {
+      "name": "Sinister Trap Lead",
+      "prompt": "dark sinister trap lead",
+      "params": {
+        "osc1Wave": 2, "osc1Unison": 5, "osc1Detune": 12, "osc1Sub": 0.0,
+        "pulseWidth": 0.5, "wavetablePos": 0.5,
+        "osc2Wave": 3, "osc2Coarse": -12, "osc2Level": 0.5,
+        "filterType": 0, "filterCutoff": 2500, "filterReso": 0.8, "filterDrive": 1.5,
+        "filterEnvAmt": 0.7,
+        "filterAttack": 0.005, "filterDecay": 0.2, "filterSustain": 0.3, "filterRelease": 0.2,
+        "ampAttack": 0.01, "ampDecay": 0.3, "ampSustain": 0.7, "ampRelease": 0.3,
+        "distortionDrive": 3.0, "distortionMix": 0.3,
+        "chorusRate": 0.3, "chorusDepth": 0.2, "chorusMix": 0.15,
+        "delayTime": 0.25, "delayFeedback": 0.3, "delayMix": 0.2,
+        "reverbSize": 0.5, "reverbDamping": 0.5, "reverbMix": 0.2,
+        "masterGain": 0.85, "glide": 0.0, "styleStrength": 1.0
+      }
+    },
+    {
+      "name": "Trap Pluck",
+      "prompt": "trap pluck arp",
+      "params": {
+        "osc1Wave": 2, "osc1Unison": 1, "osc1Detune": 0, "osc1Sub": 0.0,
+        "pulseWidth": 0.5, "wavetablePos": 0.5,
+        "osc2Wave": 3, "osc2Coarse": 12, "osc2Level": 0.3,
+        "filterType": 0, "filterCutoff": 3000, "filterReso": 0.7, "filterDrive": 1.0,
+        "filterEnvAmt": 0.85,
+        "filterAttack": 0.005, "filterDecay": 0.15, "filterSustain": 0.1, "filterRelease": 0.15,
+        "ampAttack": 0.005, "ampDecay": 0.2, "ampSustain": 0.2, "ampRelease": 0.15,
+        "distortionDrive": 1.0, "distortionMix": 0.1,
+        "chorusRate": 0.5, "chorusDepth": 0.2, "chorusMix": 0.15,
+        "delayTime": 0.375, "delayFeedback": 0.4, "delayMix": 0.25,
+        "reverbSize": 0.4, "reverbDamping": 0.5, "reverbMix": 0.15,
+        "masterGain": 0.8, "glide": 0.0, "styleStrength": 1.0
+      }
+    }
+  ]
+}
