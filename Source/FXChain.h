@@ -60,7 +60,11 @@ public:
     // --- Chorus ---
     void setChorusRate(float hz)    { m_chorus.setRate(juce::jlimit(0.0f, 10.0f, hz)); }
     void setChorusDepth(float d)    { m_chorus.setDepth(juce::jlimit(0.0f, 1.0f, d)); }
-    void setChorusMix(float m)      { m_chorus.setMix(juce::jlimit(0.0f, 1.0f, m)); }
+    void setChorusMix(float m)
+    {
+        m_chorusMix = juce::jlimit(0.0f, 1.0f, m);
+        m_chorus.setMix(m_chorusMix);
+    }
 
     // --- Delay ---
     void setDelayTime(float seconds)
@@ -102,7 +106,7 @@ public:
         }
 
         // ---- 2. Chorus ----
-        if (m_chorus.getMix() > 0.001f)
+        if (m_chorusMix > 0.001f)
         {
             juce::dsp::AudioBlock<float> block(buffer);
             juce::dsp::ProcessContextReplacing<float> ctx(block);
@@ -132,9 +136,7 @@ public:
             const int numCh = buffer.getNumChannels();
             if (numCh >= 2)
             {
-                m_reverb.processStereo(buffer.getReadPointer(0),
-                                       buffer.getReadPointer(1),
-                                       buffer.getWritePointer(0),
+                m_reverb.processStereo(buffer.getWritePointer(0),
                                        buffer.getWritePointer(1),
                                        numSamples);
             }
@@ -152,6 +154,7 @@ private:
     // Distortion (sample-wise tanh – not using a separate WaveShaper)
     float m_drive = 1.0f;
     float m_distortionMix = 0.0f;
+    float m_chorusMix = 0.0f;
 
     // Chorus
     juce::dsp::Chorus<float> m_chorus;

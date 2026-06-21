@@ -8,7 +8,8 @@ namespace aisynth {
 // =====================================================================
 // PresetBrowser – list of presets with category filter, save, delete.
 // =====================================================================
-class PresetBrowser : public juce::Component {
+class PresetBrowser : public juce::Component,
+                      public juce::ListBoxModel {
 public:
     using LoadCallback   = std::function<void(const juce::String &)>;
     using SaveCallback   = std::function<void(const juce::String &)>;

@@ -2,6 +2,7 @@
 
 #include <JuceHeader.h>
 #include "SynthEngine.h"
+#include "TextToPreset.h"
 
 namespace aisynth {
 
@@ -301,9 +302,13 @@ private:
             PresetEntry e;
             e.name = f.getFileNameWithoutExtension();
             e.category = "User";
-            juce::String text;
-            if (f.loadFileAsText(text) && jsonToParams(text, e))
-                m_userPresets.push_back(e);
+            juce::FileInputStream stream(f);
+            if (stream.openedOk())
+            {
+                juce::String text = stream.readEntireStreamAsString();
+                if (jsonToParams(text, e))
+                    m_userPresets.push_back(e);
+            }
         }
         rebuildAll();
     }

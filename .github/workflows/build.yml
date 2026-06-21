@@ -1,0 +1,137 @@
+name: Build AI Synth (Windows VST3 + Installer)
+
+# =============================================================================
+# This workflow builds the VST3 plugin AND the Windows installer in the cloud.
+# You don't need ANY compiler installed locally — just fork this repo, push,
+# and download the installer .exe from the Releases page.
+# =============================================================================
+
+on:
+  push:
+    tags:
+      - 'v*'           # Trigger on version tags (e.g. v1.0.0)
+    branches:
+      - main           # Also build on main for testing
+  workflow_dispatch:   # Or trigger manually from the Actions tab
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      # -------------------------------------------------------------------
+      # 1. Check out source
+      # -------------------------------------------------------------------
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # -------------------------------------------------------------------
+      # 2. Set up MSVC dev environment
+      # -------------------------------------------------------------------
+      - name: 🛠️ Set up MSVC
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      # -------------------------------------------------------------------
+      # 3. Cache JUCE (saves ~5 min on subsequent builds)
+      # -------------------------------------------------------------------
+      - name: 💾 Cache JUCE build
+        uses: actions/cache@v4
+        with:
+          path: |
+            build/_deps
+            ~/AppData/Local/JUCE
+          key: juce-7.0.12-${{ runner.os }}-${{ hashFiles('CMakeLists.txt') }}
+
+      # -------------------------------------------------------------------
+      # 4. Configure CMake (NMake for fast single-thread build, or Ninja)
+      # -------------------------------------------------------------------
+      - name: ⚙️ Configure CMake
+        run: |
+          cmake -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release
+        shell: cmd
+
+      # -------------------------------------------------------------------
+      # 5. Build VST3 plugin
+      # -------------------------------------------------------------------
+      - name: 🔨 Build VST3
+        run: cmake --build build --config Release --target AISynth_VST3 --parallel
+        shell: cmd
+
+      # -------------------------------------------------------------------
+      # 6. Build Standalone app
+      # -------------------------------------------------------------------
+      - name: 🔨 Build Standalone
+        run: cmake --build build --config Release --target AISynth_Standalone --parallel
+        shell: cmd
+
+      # -------------------------------------------------------------------
+      # 7. Install Inno Setup
+      # -------------------------------------------------------------------
+      - name: 📦 Install Inno Setup
+        run: |
+          choco install innosetup -y --no-progress
+        shell: cmd
+
+      # -------------------------------------------------------------------
+      # 8. Build the Windows installer (.exe)
+      # -------------------------------------------------------------------
+      - name: 🏗️ Build Installer
+        run: |
+          cd Installer
+          "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" installer.iss
+        shell: cmd
+
+      # -------------------------------------------------------------------
+      # 9. Upload build artifacts (downloadable from the Actions run page)
+      # -------------------------------------------------------------------
+      - name: 📤 Upload VST3
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI-Synth-VST3
+          path: build/AISynth_artefacts/Release/VST3/AI Synth.vst3
+          if-no-files-found: error
+
+      - name: 📤 Upload Standalone
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI-Synth-Standalone
+          path: build/AISynth_artefacts/Release/Standalone/AI Synth.exe
+          if-no-files-found: error
+
+      - name: 📤 Upload Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: AI-Synth-Installer
+          path: Installer/Output/AI Synth Setup.exe
+          if-no-files-found: error
+
+  # ---------------------------------------------------------------------------
+  # Release job — only runs on version tags (v1.0.0, v1.1.0, etc.)
+  # ---------------------------------------------------------------------------
+  release:
+    needs: build-windows
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
+    steps:
+      - name: 📥 Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: 📝 List artifacts
+        run: find artifacts -type f
+
+      - name: 🚀 Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: |
+            artifacts/AI-Synth-Installer/AI Synth Setup.exe
+            artifacts/AI-Synth-Standalone/AI Synth.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

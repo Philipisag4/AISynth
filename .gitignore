@@ -1,0 +1,40 @@
+# Build outputs
+build/
+build-*/
+out/
+cmake-build-*/
+
+# IDE files
+.vscode/
+.idea/
+*.user
+*.suo
+*.userprefs
+*.swp
+.DS_Store
+Thumbs.db
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+
+# Compiled artifacts
+*.vst3
+*.component
+*.app
+*.exe
+*.dll
+*.so
+
+# Inno Setup output
+Installer/Output/
+
+# JUCE auto-downloaded sources
+_deps/
+JUCE/
+
+# Logs
+*.log

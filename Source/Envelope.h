@@ -86,9 +86,9 @@ public:
 private:
     void recalcRates()
     {
-        m_attackRate  = static_cast<float>(m_sampleTime / juce::jmax(0.001, m_attack));
-        m_decayRate   = static_cast<float>(m_sampleTime / juce::jmax(0.001, m_decay));
-        m_releaseRate = static_cast<float>(m_sampleTime / juce::jmax(0.001, m_release));
+        m_attackRate  = static_cast<float>(m_sampleTime / juce::jmax(0.001, (double) m_attack));
+        m_decayRate   = static_cast<float>(m_sampleTime / juce::jmax(0.001, (double) m_decay));
+        m_releaseRate = static_cast<float>(m_sampleTime / juce::jmax(0.001, (double) m_release));
     }
 
     double m_sampleRate = 44100.0;

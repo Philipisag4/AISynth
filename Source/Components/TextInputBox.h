@@ -34,7 +34,6 @@ public:
         m_generateButton.setColour(juce::TextButton::buttonOnColourId,  juce::Colour(0xff0288d1));
         m_generateButton.setColour(juce::TextButton::textColourOffId,   juce::Colour(0xff0a0a0a));
         m_generateButton.setColour(juce::TextButton::textColourOnId,    juce::Colour(0xff0a0a0a));
-        m_generateButton.setFont(juce::Font(15.0f, juce::Font::bold));
         m_generateButton.onClick = [this] {
             m_onSubmit(m_editor.getText());
         };
